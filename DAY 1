@@ -1,0 +1,74 @@
+# LeetCode 3000 – Water Bottles II
+
+## Problem
+You are given two integers:  
+- **numBottles** → initial number of full water bottles  
+- **numExchange** → number of empty bottles required to exchange for one full bottle  
+
+### Rules
+- You can drink any number of full bottles, turning them into empty ones.  
+- You can exchange **numExchange** empty bottles for one full bottle. After each exchange, `numExchange` increases by 1.  
+- You cannot exchange multiple batches at the same exchange value.  
+
+**Goal:** Find the maximum number of water bottles you can drink.  
+
+---
+
+## Examples
+**Example 1**  
+Input: `numBottles = 13, numExchange = 6`  
+Output: `15`  
+
+**Example 2**  
+Input: `numBottles = 10, numExchange = 3`  
+Output: `13`  
+
+---
+
+## Key Insights
+- Every bottle drunk increases the number of empty bottles.  
+- After each exchange, the requirement (`numExchange`) becomes harder by +1.  
+- Greedy strategy: always exchange whenever possible.  
+- Stop when there are not enough empty bottles to perform another exchange.  
+
+---
+
+## Approach
+1. Start with `drunk = numBottles` (drink all initial bottles).  
+2. Convert them to `empty = numBottles`.  
+3. While `empty >= numExchange`:  
+   - Use `numExchange` empty bottles → gain 1 full bottle.  
+   - Increase `numExchange` by 1.  
+   - Drink the new bottle → increment `drunk`.  
+   - Add the new empty bottle back to `empty`.  
+4. Return `drunk`.  
+
+---
+
+## Complexity
+- **Time Complexity:** `O(numBottles + numExchange)` → at most 200 steps since both ≤ 100.  
+- **Space Complexity:** `O(1)` → only variables used.  
+
+---
+
+## Python Solution
+```python
+class Solution:
+    def maxBottlesDrunk(self, numBottles: int, numExchange: int) -> int:
+        # Drink all initial bottles
+        drunk = numBottles
+        # They all become empty
+        empty = numBottles
+
+        # Continue while we can exchange
+        while empty >= numExchange:
+            # Exchange empty bottles for one full bottle
+            empty -= numExchange
+            # Increase exchange requirement
+            numExchange += 1
+            # Drink the new bottle
+            drunk += 1
+            # That bottle becomes empty
+            empty += 1
+
+        return drunk
