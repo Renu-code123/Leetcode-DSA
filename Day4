@@ -1,0 +1,56 @@
+#778. Swim in Rising water
+
+from collections import deque
+from typing import List
+
+class Solution:
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        
+        # Helper function to check if a path exists from (0,0) to (n-1, n-1)
+        # where all cells on the path have elevation <= t.
+        def canReach(t: int) -> bool:
+            # Must start at an elevation <= t
+            if grid[0][0] > t:
+                return False
+
+            queue = deque([(0, 0)])
+            visited = set([(0, 0)])
+            
+            # 4-directional moves: (dr, dc)
+            directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+            
+            while queue:
+                r, c = queue.popleft()
+                
+                if r == n - 1 and c == n - 1:
+                    return True  # Reached the destination
+                
+                for dr, dc in directions:
+                    nr, nc = r + dr, c + dc
+                    
+                    # Check boundaries
+                    if 0 <= nr < n and 0 <= nc < n:
+                        # Check if not visited and elevation is safe
+                        if (nr, nc) not in visited and grid[nr][nc] <= t:
+                            visited.add((nr, nc))
+                            queue.append((nr, nc))
+                            
+            return False
+
+        # Binary Search for the minimum time t
+        L, R = 0, n * n - 1  # Range of possible minimum times (elevations)
+        min_time = n * n - 1
+
+        while L <= R:
+            mid = L + (R - L) // 2
+            
+            if canReach(mid):
+                # mid is a possible time; try for a smaller time
+                min_time = mid
+                R = mid - 1
+            else:
+                # mid is too small; need more time
+                L = mid + 1
+                
+        return min_time
