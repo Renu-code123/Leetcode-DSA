@@ -1,0 +1,11 @@
+##3147.taking-maximum-energy-from-the-mystic-dungeon
+class Solution:
+    def maximumEnergy(self, energy: List[int], k: int) -> int:
+        n = len(energy)
+        
+        # Traverse backwards to build dp on the fly (in-place)
+        for i in range(n - k - 1, -1, -1):
+            energy[i] += energy[i + k]
+        
+        # The answer is the maximum possible accumulated energy
+        return max(energy)
