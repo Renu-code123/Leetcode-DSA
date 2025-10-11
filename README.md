@@ -1,2 +1,2 @@
 # Leetcode-DSA
-1000 days coding
+100 days coding
