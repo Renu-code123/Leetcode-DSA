@@ -1,0 +1,26 @@
+#3186.maximum-total-damage-with-spell-casting
+
+from collections import Counter
+
+class Solution:
+    def maximumTotalDamage(self, power):
+        damage_sum = Counter(power)
+        unique = sorted(damage_sum.keys())
+        n = len(unique)
+        
+        dp = [0] * n
+        
+        for i in range(n):
+            take = damage_sum[unique[i]] * unique[i]
+            
+            # Find last non-conflicting index
+            j = i - 1
+            while j >= 0 and unique[i] - unique[j] <= 2:
+                j -= 1
+            
+            if j >= 0:
+                take += dp[j]
+            
+            dp[i] = max(dp[i-1] if i > 0 else 0, take)
+        
+        return dp[-1]
