@@ -1,0 +1,14 @@
+#2273.find-resultant-array-after-removing-anagrams
+
+class Solution:
+    def removeAnagrams(self, words: List[str]) -> List[str]:
+        result = [words[0]]  # Always keep the first word
+        
+        for i in range(1, len(words)):
+            # Compare sorted versions of current and previous word in result
+            if sorted(words[i]) != sorted(result[-1]):
+                result.append(words[i])
+                
+        return result
+
+        
