@@ -1,4 +1,4 @@
-#
+#smallest-missing-non-negative-integer-after-operations
 
 class Solution:
     def findSmallestInteger(self, nums: List[int], value: int) -> int:
