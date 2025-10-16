@@ -1,0 +1,20 @@
+#
+
+class Solution:
+    def findSmallestInteger(self, nums: List[int], value: int) -> int:
+        from collections import Counter
+        
+        # Normalize each number to its modulo class in range [0, value)
+        freq = Counter([num % value for num in nums])
+        
+        # For negative numbers, Python's % already gives non-negative remainder
+        # Example: -1 % 5 == 4
+        
+        mex = 0
+        while True:
+            remainder = mex % value
+            if freq[remainder] > 0:
+                freq[remainder] -= 1
+                mex += 1
+            else:
+                return mex
