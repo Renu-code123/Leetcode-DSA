@@ -1,4 +1,4 @@
-3003.
+3003.maximize-the-number-of-partitions-after-operations
 
 class Solution:
     def maxPartitionsAfterOperations(self, s: str, k: int) -> int:
