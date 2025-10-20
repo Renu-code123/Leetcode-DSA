@@ -1,4 +1,4 @@
-2011.
+2011.final-value-of-variable-after-performing-operations
 
 class Solution:
     def finalValueAfterOperations(self, operations: List[str]) -> int:
