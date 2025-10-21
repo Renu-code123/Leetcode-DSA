@@ -1,0 +1,44 @@
+
+
+from typing import List
+from collections import Counter, defaultdict
+
+class Solution:
+    def maxFrequency(self, nums: List[int], k: int, numOperations: int) -> int:
+        if not nums:
+            return 0
+
+        n = len(nums)
+        freq = Counter(nums)
+
+        # Build sweep line events for inclusive intervals [num-k, num+k].
+        # Use +1 at L and -1 at R+1 so overlap is correct for integer points.
+        events = defaultdict(int)
+        for v in nums:
+            L = v - k
+            R_plus = v + k + 1  # R+1
+            events[L] += 1
+            events[R_plus] -= 1
+            # Ensure the exact value position exists as a key so we can compute freq at that point
+            if v not in events:
+                events[v] += 0
+
+        keys = sorted(events.keys())
+        curr = 0
+        ans = 0
+
+        for i, p in enumerate(keys):
+            curr += events[p]  # current overlap for integer points p .. (next_key-1)
+            # any integer point in this constant-overlap segment can be chosen.
+            # For non-original values (or general points) we can modify up to numOperations elements:
+            ans = max(ans, min(curr, numOperations))  # choose some x that is not equal to any original num
+
+            # If p equals some original value, consider keeping some elements equal to p (cost 0)
+            if p in freq:
+                ans = max(ans, min(curr, freq[p] + numOperations))
+
+            # early stop
+            if ans == n:
+                return n
+
+        return ans
