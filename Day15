@@ -1,4 +1,4 @@
-#3346.problems/maximum-frequency-of-an-element-after-performing-operations-I
+#3346.maximum-frequency-of-an-element-after-performing-operations-I
 
 from typing import List
 from collections import Counter, defaultdict
