@@ -1,3 +1,17 @@
 #3461.check-if-digits-are-equal-in-string-after-operations-i
 
 solution:-
+class Solution:
+    def hasSameDigits(self, s: str) -> bool:
+        # Repeat until only two digits remain
+        while len(s) > 2:
+            new_s = ""
+            for i in range(len(s) - 1):
+                # Calculate sum modulo 10 for each consecutive pair
+                new_digit = (int(s[i]) + int(s[i + 1])) % 10
+                new_s += str(new_digit)
+            s = new_s  # Update string
+        
+        # Check if final two digits are same
+        return s[0] == s[1]
+
