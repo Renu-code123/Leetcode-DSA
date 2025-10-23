@@ -1,6 +1,7 @@
 #3461.check-if-digits-are-equal-in-string-after-operations-i
 
-solution:-
+Solution:-
+
 class Solution:
     def hasSameDigits(self, s: str) -> bool:
         # Repeat until only two digits remain
