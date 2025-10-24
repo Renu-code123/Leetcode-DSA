@@ -1,1 +1,21 @@
 #2048.next-greater-numerically-balanced-number
+
+
+class Solution:
+    def nextBeautifulNumber(self, n: int) -> int:
+        def is_balanced(x):
+            from collections import Counter
+            c = Counter(str(x))
+            for digit, freq in c.items():
+                d = int(digit)
+                if freq != d:
+                    return False
+            return True
+        
+        x = n + 1
+        while True:
+            if is_balanced(x):
+                return x
+            x += 1
+
+        
