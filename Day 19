@@ -1,1 +1,21 @@
 #1716.calculate-money-in-leetcode-bank
+
+class Solution:
+    def totalMoney(self, n: int) -> int:
+        full_weeks = n // 7
+        remaining_days = n % 7
+        
+        # Sum from full weeks
+        # first week sum = 28, next = 35 (28 + 7), next = 42 (28 + 14) ...
+        total = 0
+        for i in range(full_weeks):
+            total += 28 + i * 7
+        
+        # Sum from remaining days in last (incomplete) week
+        start = 1 + full_weeks  # Monday starting value of the new week
+        for i in range(remaining_days):
+            total += start + i
+        
+        return total
+
+        
