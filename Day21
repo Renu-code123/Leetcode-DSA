@@ -1,4 +1,4 @@
-#2125.number-of-laser-beams-in-a-bank
+#2125.number-of-laser-beams-in-a-bank:
 
 class Solution:
     def numberOfBeams(self, bank: List[str]) -> int:
