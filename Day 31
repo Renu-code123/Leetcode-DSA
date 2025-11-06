@@ -1,2 +1,69 @@
 #power-grid-maintenance:-
 
+from collections import defaultdict
+import heapq
+
+class Solution:
+    def processQueries(self, c: int, connections: list[list[int]], queries: list[list[int]]) -> list[int]:
+        # Step 1: Build Disjoint Set Union (Union-Find)
+        parent = list(range(c + 1))
+        size = [1] * (c + 1)
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(a, b):
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                if size[ra] < size[rb]:
+                    ra, rb = rb, ra
+                parent[rb] = ra
+                size[ra] += size[rb]
+
+        # Step 2: Connect the stations into power grids
+        for u, v in connections:
+            union(u, v)
+
+        # Step 3: Group nodes by their root (connected components)
+        components = defaultdict(list)
+        for node in range(1, c + 1):
+            root = find(node)
+            components[root].append(node)
+
+        # Step 4: Maintain a min-heap for each component containing only operational stations
+        online = [True] * (c + 1)
+        heaps = {}
+        for root, nodes in components.items():
+            heaps[root] = nodes[:]  # copy list of nodes
+            heapq.heapify(heaps[root])
+
+        # Step 5: Process queries
+        result = []
+
+        for query in queries:
+            typ, x = query
+            root = find(x)
+
+            if typ == 2:
+                # Station x goes offline
+                online[x] = False
+
+            else:  # typ == 1
+                if online[x]:
+                    # Station itself is online
+                    result.append(x)
+                else:
+                    # Find the smallest operational station in its grid
+                    heap = heaps[root]
+                    while heap and not online[heap[0]]:
+                        heapq.heappop(heap)
+                    if heap:
+                        result.append(heap[0])
+                    else:
+                        result.append(-1)
+
+        return result
+
