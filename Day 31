@@ -1,5 +1,5 @@
 #power-grid-maintenance:-
-.
+
 
 class Solution:
     def processQueries(self, c: int, connections: list[list[int]], queries: list[list[int]]) -> list[int]:
