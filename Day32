@@ -1,1 +1,45 @@
 .
+
+
+
+from typing import List
+
+class Solution:
+    def maxPower(self, stations: List[int], r: int, k: int) -> int:
+        n = len(stations)
+        prefix = [0] * (n + 1)
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + stations[i]
+        power = [0] * n
+        for i in range(n):
+            left = max(0, i - r)
+            right = min(n - 1, i + r)
+            power[i] = prefix[right + 1] - prefix[left]
+
+        def can(x):
+            add = [0] * (n + 1)
+            used = 0
+            curr_add = 0
+            for i in range(n):
+                curr_add += add[i]
+                total = power[i] + curr_add
+                if total < x:
+                    need = x - total
+                    used += need
+                    if used > k:
+                        return False
+                    curr_add += need
+                    if i + 2 * r + 1 < n:
+                        add[i + 2 * r + 1] -= need
+            return True
+
+        low, high = 0, sum(stations) + k
+        ans = 0
+        while low <= high:
+            mid = (low + high) // 2
+            if can(mid):
+                ans = mid
+                low = mid + 1
+            else:
+                high = mid - 1
+        return ans
