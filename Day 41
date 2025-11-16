@@ -1,4 +1,4 @@
-#number-of-substrings-with-only-1s:-
+#1513.number-of-substrings-with-only-1s:-
 
 class Solution:
     def numSub(self, s: str) -> int:
