@@ -1,0 +1,20 @@
+#1930.unique-length-3-palindromic-subsequences:-
+
+class Solution:
+    def countPalindromicSubsequence(self, s: str) -> int:
+        first = [-1] * 26
+        last = [-1] * 26
+        
+        for i, ch in enumerate(s):
+            idx = ord(ch) - ord('a')
+            if first[idx] == -1:
+                first[idx] = i
+            last[idx] = i
+        
+        ans = 0
+        
+        for x in range(26):
+            if first[x] != -1 and last[x] != -1 and first[x] < last[x]:
+                ans += len(set(s[first[x] + 1 : last[x]]))
+        
+        return ans
