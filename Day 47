@@ -1,0 +1,17 @@
+#
+
+class Solution(object):
+    def maxSumDivThree(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        dp = [0, float('-inf'), float('-inf')]
+        
+        for x in nums:
+            temp = dp[:]  # copy previous state
+            for r in range(3):
+                new_r = (r + x) % 3
+                dp[new_r] = max(dp[new_r], temp[r] + x)
+        
+        return dp[0]
