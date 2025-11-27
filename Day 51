@@ -1,0 +1,22 @@
+#
+
+class Solution:
+    def maxSubarraySum(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        prefix = 0
+        best = [float('inf')] * k
+        ans = -float('inf')
+
+        for i, num in enumerate(nums):
+            prefix += num
+            mod = (i + 1) % k
+
+            if mod == 0:
+                ans = max(ans, prefix)
+
+            if best[mod] != float('inf'):
+                ans = max(ans, prefix - best[mod])
+
+            best[mod] = min(best[mod], prefix)
+
+        return ans
