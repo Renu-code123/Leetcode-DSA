@@ -1,0 +1,31 @@
+#maximum-number-of-k-divisible-components:-
+
+
+class Solution:
+    def maxKDivisibleComponents(self, n: int, edges: List[List[int]], values: List[int], k: int) -> int:
+        from collections import defaultdict
+
+        graph = defaultdict(list)
+        for a, b in edges:
+            graph[a].append(b)
+            graph[b].append(a)
+
+        self.components = 0
+
+        def dfs(node, parent):
+            total = values[node]
+
+            for child in graph[node]:
+                if child == parent:
+                    continue
+                total += dfs(child, node)
+
+            
+            if total % k == 0:
+                self.components += 1
+                return 0 
+            
+            return total
+
+        dfs(0, -1)
+        return self.components
