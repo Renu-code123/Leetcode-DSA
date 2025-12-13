@@ -1,0 +1,21 @@
+#3606.coupon-code-validator:-
+
+
+
+class Solution:
+    def validateCoupons(self, code: List[str], businessLine: List[str], isActive: List[bool]) -> List[str]:
+        valid_lines = ["electronics", "grocery", "pharmacy", "restaurant"]
+        order = {line: i for i, line in enumerate(valid_lines)}
+        res = []
+        
+        for c, b, a in zip(code, businessLine, isActive):
+            if not a:
+                continue
+            if not c or not all(ch.isalnum() or ch == "_" for ch in c):
+                continue
+            if b not in order:
+                continue
+            res.append((order[b], c))
+        
+        res.sort()
+        return [c for _, c in res]
