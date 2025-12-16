@@ -1,0 +1,43 @@
+#3562.
+
+  class Solution:
+    def maxProfit(self, n, present, future, hierarchy, budget):
+        from collections import defaultdict
+
+        tree = defaultdict(list)
+        for u, v in hierarchy:
+            tree[u - 1].append(v - 1)
+
+        def dfs(u):
+            dpA = [-10**9] * (budget + 1)
+            dpB = [-10**9] * (budget + 1)
+            dpA[0] = dpB[0] = 0
+
+            for v in tree[u]:
+                cA, cB = dfs(v)
+                ndpA = [-10**9] * (budget + 1)
+                ndpB = [-10**9] * (budget + 1)
+                for i in range(budget + 1):
+                    if dpA[i] >= 0:
+                        for j in range(budget - i + 1):
+                            ndpA[i + j] = max(ndpA[i + j], dpA[i] + cA[j])
+                    if dpB[i] >= 0:
+                        for j in range(budget - i + 1):
+                            ndpB[i + j] = max(ndpB[i + j], dpB[i] + cA[j])
+                dpA, dpB = ndpA, ndpB
+
+            costA = present[u]
+            costB = present[u] // 2
+            gainA = future[u] - present[u]
+            gainB = future[u] - costB
+
+            for i in range(budget, -1, -1):
+                if i >= costA:
+                    dpA[i] = max(dpA[i], dpB[i - costA] + gainA)
+                if i >= costB:
+                    dpB[i] = max(dpB[i], dpB[i - costB] + gainB)
+
+            return dpA, dpB
+
+        res, _ = dfs(0)
+        return max(res)
